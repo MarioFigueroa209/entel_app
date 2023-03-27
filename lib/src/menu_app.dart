@@ -33,14 +33,10 @@ class MenuApp extends StatelessWidget {
             BotonMenu(
               title: 'CONSULTA RESERVA',
               onTap: () {
-                /* Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => InspeccionEquiposLiquidaPage(
-                              idServiceOrder: idServiceOrder,
-                              idUsuario: idUsuario,
-                              jornada: jornada,
-                            ))); */
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("Funcionalidad de consulta proximamente"),
+                  backgroundColor: Colors.lightBlue,
+                ));
               },
               icon: Icons.list,
             ),

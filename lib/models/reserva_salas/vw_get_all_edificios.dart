@@ -13,24 +13,24 @@ String vwGetAllEdificiosToJson(List<VwGetAllEdificios> data) =>
 
 class VwGetAllEdificios {
   VwGetAllEdificios({
-    this.idEdifcio,
+    this.idEdificio,
     this.nombreEdificio,
     this.ubicacion,
   });
 
-  int? idEdifcio;
+  int? idEdificio;
   String? nombreEdificio;
   String? ubicacion;
 
   factory VwGetAllEdificios.fromJson(Map<String, dynamic> json) =>
       VwGetAllEdificios(
-        idEdifcio: json["idEdifcio"],
+        idEdificio: json["idEdifcio"],
         nombreEdificio: json["nombreEdificio"],
         ubicacion: json["ubicacion"],
       );
 
   Map<String, dynamic> toJson() => {
-        "idEdifcio": idEdifcio,
+        "idEdifcio": idEdificio,
         "nombreEdificio": nombreEdificio,
         "ubicacion": ubicacion,
       };

@@ -23,7 +23,7 @@ class _ReservaSalas1State extends State<ReservaSalas1> {
 
   late int idSala;
 
-  late String getNombreEdificio;
+  String? getNombreEdificio;
 
   List<VwGetAllEdificios> vwGetAllEdificios = <VwGetAllEdificios>[];
 
@@ -50,36 +50,38 @@ class _ReservaSalas1State extends State<ReservaSalas1> {
     });
   }
 
-  List<DropdownMenuItem<String>> getEdificiosLista(
+  List<DropdownMenuItem<String>> listEdificios(
       List<VwGetAllEdificios> edificios) {
     List<DropdownMenuItem<String>> dropDownItems = [];
 
     for (var element in edificios) {
       var newDropDown = DropdownMenuItem(
-        value: element.idEdifcio.toString(),
+        value: element.idEdificio.toString(),
         child: Text(
           element.nombreEdificio.toString(),
         ),
       );
+
       dropDownItems.add(newDropDown);
     }
 
     return dropDownItems;
   }
 
-  List<DropdownMenuItem<String>> getSalasByEdificio(
+  List<DropdownMenuItem<String>> listSalasByEdificio(
       List<VwGetSalasByEdificio> edificios) {
     List<DropdownMenuItem<String>> dropDownItems = [];
-
-    for (var element in edificios) {
-      var newDropDown = DropdownMenuItem(
-        value: element.idSala.toString(),
-        child: Text(
-          element.nombreSala.toString(),
-        ),
-      );
-      dropDownItems.add(newDropDown);
-    }
+    setState(() {
+      for (var element in edificios) {
+        var newDropDown = DropdownMenuItem(
+          value: element.idSala.toString(),
+          child: Text(
+            element.nombreSala.toString(),
+          ),
+        );
+        dropDownItems.add(newDropDown);
+      }
+    });
     return dropDownItems;
   }
 
@@ -117,14 +119,23 @@ class _ReservaSalas1State extends State<ReservaSalas1> {
                 icon: const Icon(
                   Icons.arrow_drop_down_circle_outlined,
                 ),
-                items: getEdificiosLista(vwGetAllEdificios),
-                onChanged: (value) => {
-                  setState(() async {
+                items: listEdificios(vwGetAllEdificios),
+                onChanged: (value) async {
+                  setState(() {
                     valueEdificioDropdown = value as String;
                     idEdificio = int.parse(value.toString());
-                    await getSalasByEdificios(idEdificio);
-                  }),
-                  getNombreEdificio = vwGetAllEdificios[0].nombreEdificio!,
+                    if (idEdificio == 1) {
+                      getNombreEdificio = " Edificio Alzamora";
+                    }
+                    if (idEdificio == 2) {
+                      getNombreEdificio = " Edificio Libertador";
+                    }
+                    if (idEdificio == 3) {
+                      getNombreEdificio = " Edificio Portales";
+                    }
+                    print(getNombreEdificio);
+                  });
+                  await getSalasByEdificios(idEdificio);
                 },
                 validator: (value) {
                   if (value != valueEdificioDropdown) {
@@ -149,14 +160,15 @@ class _ReservaSalas1State extends State<ReservaSalas1> {
                 icon: const Icon(
                   Icons.arrow_drop_down_circle_outlined,
                 ),
-                items: getSalasByEdificio(vwGetSalasByEdificio),
-                onChanged: (value) => {
+                onChanged: (value) {
                   setState(() {
+                    vwGetSalasByEdificio;
                     valueSalaDropdown = value as String;
-                  }),
-                  idSala = int.parse(value.toString()),
-                  print(idSala)
+                  });
+                  idSala = int.parse(value.toString());
+                  print(idSala);
                 },
+                items: listSalasByEdificio(vwGetSalasByEdificio),
                 validator: (value) {
                   if (value != valueSalaDropdown) {
                     return 'Por favor, elige la sala';
@@ -180,7 +192,7 @@ class _ReservaSalas1State extends State<ReservaSalas1> {
                         MaterialPageRoute(
                             builder: (context) => ReservaSalas2(
                                   idSala: idSala,
-                                  edificio: getNombreEdificio,
+                                  edificio: getNombreEdificio!,
                                 )));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
